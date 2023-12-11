@@ -28,7 +28,7 @@ public class RoomReservationsController {
     public String getReservations(@RequestParam(value = "date", required = false) String dateString, Model model){
         Date date = this.dateUtils.createDateFromDateString(dateString);
         List<RoomReservation> roomReservations = this.reservationService.getRoomReservationsForDate(date);
-        model.addAttribute("roomReservarvations", roomReservations);
+        model.addAttribute("roomReservations", roomReservations);
         return "roomres";
 
     }
