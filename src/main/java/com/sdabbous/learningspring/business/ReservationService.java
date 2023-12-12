@@ -60,26 +60,22 @@ public class ReservationService {
     }
 
 
-    public List<GuestList> getGuestList() {
+    public List<Guest> getGuestList() {
         Iterable<Guest> guests = this.guestRepository.findAll();
-        Map<Long, GuestList> guestListMap = new HashMap<>();
+        List<Guest> guestList = new ArrayList<>();
+        guests.forEach(guest -> {guestList.add(guest);});
 
-        guests.forEach(guest -> {
-            GuestList guestList = new GuestList();
-            guestList.setGuestId(guest.getId());
-            guestList.setGuestLastName(guest.getLastName());
-            guestList.setGuestFirstName(guest.getLastName());
-            guestList.setGuestEmail(guest.getEmail());
-            guestList.setGuestPhoneNumber(guest.getPhoneNumber());
-            guestListMap.put(guest.getId(), guestList);
+        guestList.sort(new Comparator<Guest>() {
+            @Override
+            public int compare(Guest o1, Guest o2) {
+                if (o1.getLastName().equals(o2.getLastName())) {
+                    return o1.getFirstName().compareTo(o2.getFirstName());
+                }
+                return o1.getLastName().compareTo(o2.getLastName());
+            }
         });
 
-        List<GuestList> guestLists = new ArrayList<>();
-        for(Long id : guestListMap.keySet()){
-            guestLists.add(guestListMap.get(id));
-        }
-
-        return guestLists;
+        return guestList;
     }
 }
 
